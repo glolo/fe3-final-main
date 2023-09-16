@@ -2,8 +2,18 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom'
 import "./card.css";
 
-const Card = ({ name, username, id }) => {
+const Card = ({ name, username, id, isFavorite, dispatch  }) => {
   const [renderCount, setRenderCount] = useState(0);
+
+  const addOrRemoveFavorite = () => {
+    if (isFavorite) {
+      // Si ya es un favorito, quitarlo de favoritos
+      dispatch({ type: 'REMOVE_FAVORITE', payload: {name, username, id} });
+    } else {
+      // Si no es un favorito, agregarlo a favoritos
+      dispatch({ type: 'ADD_FAVORITE', payload: {name, username, id} });
+    }
+  };
 
 
   const addFav = () => {
@@ -39,11 +49,10 @@ const Card = ({ name, username, id }) => {
         <div className="card-text">
           <h4 className="card-title">{name}</h4>
           <div>{username} </div>
-          <div>{id} </div>
         </div>
       </Link>
       {/* Ademas deberan integrar la logica para guardar cada Card en el localStorage */}
-      <button
+      {/* <button
           onClick={() => addFav({id, name, username})}
           className="favButton"
           >
@@ -53,6 +62,9 @@ const Card = ({ name, username, id }) => {
           )
               ? 'Quitar de Favoritos'
               : 'Agregar a Favoritos'}
+      </button> */}
+      <button onClick={addOrRemoveFavorite} className="favButton">
+        {isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
       </button>
     </div>
   );

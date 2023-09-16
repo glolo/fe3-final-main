@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Card from "../Components/Card";
+import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
+import { useTheme } from '../Context/ThemeContext';
 
 
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
+
 
 const Favs = () => {
   const [favoritos, setFavoritos] = useState([]);
+  //Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
+  const { state } = useTheme();
+  const themeClass = state.theme === 'dark' ? 'dark' : 'light';
 
   useEffect(() => {
     // Obtén los dentistas destacados almacenados en localStorage
@@ -14,7 +20,8 @@ const Favs = () => {
   }, []);
 
   return (
-    <>
+    <div className={`page ${themeClass}`}>
+      <Navbar/>
       <h1>Dentists Favs</h1>
       <div className="card-grid">
         {/* este componente debe consumir los destacados del localStorage */}
@@ -30,8 +37,10 @@ const Favs = () => {
         <p>No tienes odontologos destacados.</p>
       )}
       </div> 
-    </>
+      <Footer/>
+    </div>
   );
 };
 
 export default Favs;
+

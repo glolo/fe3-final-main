@@ -1,8 +1,28 @@
+// ThemeContext.js
 import React, { createContext, useReducer, useContext } from 'react';
-import { initialState, themeReducer } from '../Reducers/themeReducer';
 
+// Define the theme context
 const ThemeContext = createContext();
 
+// Initial theme state
+const initialState = {
+  theme: 'light',
+};
+
+// Theme reducer
+const themeReducer = (state, action) => {
+  switch (action.type) {
+    case 'TOGGLE_THEME':
+      return {
+        ...state,
+        theme: state.theme === 'light' ? 'dark' : 'light',
+      };
+    default:
+      return state;
+  }
+};
+
+// Theme provider
 const ThemeProvider = ({ children }) => {
   const [state, dispatch] = useReducer(themeReducer, initialState);
 
@@ -13,12 +33,9 @@ const ThemeProvider = ({ children }) => {
   );
 };
 
+// Custom hook for accessing the theme context
 const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
+  return useContext(ThemeContext);
 };
 
 export { ThemeProvider, useTheme };
